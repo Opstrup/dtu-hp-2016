@@ -1,1 +1,1 @@
-# dtu-hp-2016
+# Computationally Hard Problems course DTU 2016
