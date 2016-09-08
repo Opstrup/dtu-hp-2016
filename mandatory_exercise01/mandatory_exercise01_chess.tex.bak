@@ -1,0 +1,93 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{amsmath, amsfonts}
+\usepackage[utf8]{inputenc}
+
+\begin{document}
+\begin{center}
+{{\Large \sc Computationally Hard Problems}}
+\end{center}
+\rule{\textwidth}{1pt}
+\begin{description}
+\item[Student name and id:] Anders H. Opstrup (s160148)
+\item[Collaborator name(s) and id(s):] Salik Lennert Pedersen (s134416)
+\item[Hand-in for week:] 1
+\end{description}
+\rule{\textwidth}{1pt}
+
+
+\section*{Exercise 1}
+
+A chess game configuration describes the current state in the well known chess game. Such a state includes the positions of the up to 32 available pieces on the 8 x 8-chess board and the color of the player whose turn it is next. The aim is to design a formal language L$_{chess}$ for chess game configurations.
+
+\subsection*{a)}
+Specify the alphabet $\sum_{chess}$ you use.
+\newline
+
+$\sum_{chess}$ = \{a, b, c, d, e, f, g, h, 1, 2, 3, 4, 5, 6, 7, 8, +, -, \#, Q, K, N, B, R, P\}
+
+\subsubsection*{Description of letters}
+Short description of the given letters in the alphabet $\sum_{chess}$ \newline
+
+Letters: a, b, c, d, e, f, g, h, 1, 2, 3, 4, 5, 6, 7, 8
+
+Describe the position of a piece on the board
+\newline
+
+Letters: +, -
+
+Describe the colors of the piece (- white, + black)
+\newline
+
+The Letter: \#
+
+Describe the beginning of a new fragment in the word
+\newline
+
+The Letters:  Q, K, N, B, R, P
+
+Describe the class of the piece.
+
+Q: Queen
+
+K: King
+
+N: Knight
+
+B: Bishop
+
+R: Rook
+
+P: Prawn
+
+
+\subsection*{b)}
+Specify how a chess game configuration is encoded in the language L$_{chess}$.
+\newline
+
+Rules for L$_{chess}$
+\begin{enumerate}  
+	\item We only describe positions with pieces. 
+	\item First fraction describe which turn it is.
+	\item When describing the position of a piece, we first tell the color of the piece, followed by the position on the board (letters first), followed by the letter representing the piece.
+\end{enumerate}
+
+\subsection*{c)}
+Describe how one can check whether a given word $\omega \in \sum_{chess}^{*}$, and, if so, how the game configuration can be reconstructed.
+\newline
+
+The word is incorrect if $| \omega | <$ minLength or if $| \omega | >$ maxLength.
+
+minLength = 2 next turn letters + 5 pieces letters = 7
+
+maxLenght = 2 next turn letters + 5 pieces letters * 32 pieces = 162 \newline
+
+A word must be able to be defined as following $\frac{| \omega | - 2}{5} = \mathbb{N}$
+
+\subsection*{d)}
+How would the initial game configuration (i. e., the configuration the game is set up to begin with) be encoded in your language? \newline
+
+$- \#+a8R \#+b8N \#+c8B \#+d8K \#+e8Q \#+f8B \#+g8N \#+h8R \#+a7P \#+b7P \#+c7P \#+d7P \#+e7P \#+f7P \#+g7P \#+h7P 
+\#-a1R \#-b1N \#-c1B \#-d1K \#-e1Q \#-f1B \#-g1N \#-h1R \#-a2P \#-b2P \#-c2P \#-d2P \#-e2P \#-f2P \#-g2P \#-h2P$
+
+\end{document}
