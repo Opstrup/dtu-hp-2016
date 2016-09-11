@@ -10,7 +10,7 @@
 \rule{\textwidth}{1pt}
 \begin{description}
 \item[Student name and id:] Anders H. Opstrup (s160148)
-\item[Collaborator name(s) and id(s):] Salik Lennert Pedersen (s134416)
+\item[Collaborator name(s) and id(s):]
 \item[Hand-in for week:] 2
 \end{description}
 \rule{\textwidth}{1pt}
@@ -43,11 +43,13 @@ The algorithm is correct for the following reason: As long as the decision algor
 If the disjunctive form contains more than one monomial which meets our requirements, the decision algorithm will simply answer YES if we remove the monomial, which is fine because we are just looking for given solution. If we want to find all the solutions we could run the algorithm again after removing the last monomial. 
   
 \subsection*{c)}
-Prove that the running time of the algorithm is bounded from above by a polynomial.Any polynomial is sufficient; you need not look for a polynomial of minimal degree. Recall that a call to $A_{d}$ counts one step.
+Prove that the running time of the algorithm is bounded from above by a polynomial. Any polynomial is sufficient; you need not look for a polynomial of minimal degree. Recall that a call to $A_{d}$ counts as one step. \newline
+
+Given $A_{d}$ counts as one step:
+
+The algorithm makes first one call to $A_{d}$ and calls $A_{d}$ one time in each loop n times. There for the running time of the algorithm is $1 + n ( n - 1 ) \rightarrow O(n^2)$. \newline
 
 
-
-\newline \newline
 \textbf{Note:} The input of REFUTATION is disjunctive form of monomials over $n$ boolean variables, nothing else. In particular, a legal input cannot specify specific settings of variables.
 
 \end{document}

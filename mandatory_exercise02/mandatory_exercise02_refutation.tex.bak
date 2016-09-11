@@ -10,7 +10,7 @@
 \rule{\textwidth}{1pt}
 \begin{description}
 \item[Student name and id:] Anders H. Opstrup (s160148)
-\item[Collaborator name(s) and id(s):] Salik Lennert Pedersen (s134416)
+\item[Collaborator name(s) and id(s):]
 \item[Hand-in for week:] 2
 \end{description}
 \rule{\textwidth}{1pt}
@@ -22,14 +22,34 @@ Given is a disjunctive form consisting of $k$ monomials $m_{1}, . . . , m_{k}$ o
 You are given a decision algorithm $A_{d}$ that solves this problem, i. e., for each instance to REFUTATION, $A_{d}$ answers YES if there is an assignment that makes the truth value of the disjunctive form false; otherwise it answers NO.
 
 \subsection*{a)}
-Describe an algorithm $A_{o}$ which solves the optimization problem, that is, which finds a truth assignment making the disjunctive form false if one exists. The running time has to be polynomial in the input size and $A_{o}$ may make calls to $A_{d}$. Such calls count as one basic computational step.
- 
-\subsection*{b)}
-Argue that your algorithm is correct.
+Describe an algorithm $A_{o}$ which solves the optimization problem, that is, which finds a truth assignment making the disjunctive form false if one exists. The running time has to be polynomial in the input size and $A_{o}$ may make calls to $A_{d}$. Such calls count as one basic computational step. \newline
 
+\textbf{Phase 1)} \newline
+
+Ask $A_{d}$ if there is an assignment that makes the truth value of the disjunctive form false. If $A_{d}$ answers YES we proceed. \newline
+
+\textbf{Phase 2)} \newline
+
+When we know there is at least one assignment that makes the truth value of the disjunctive form false, we can proceed with:
+\begin{enumerate}
+	\item Step 1) We remove one of the monomials $m_{k}$
+	\item Step 2) We ask the decision algorithm $A_{d}$ again, if the answer is NO = we have found the assignment; else we repeat step 1.
+\end{enumerate}
+
+\subsection*{b)}
+Argue that your algorithm is correct. \newline
+
+The algorithm is correct for the following reason: As long as the decision algorithm returns YES, there is one assignment that makes the truth value of the disjunctive form false. If the decision algorithm answers NO, it must have answered YES in the previous call, and the monomial removed must be the one we are looking for.
+If the disjunctive form contains more than one monomial which meets our requirements, the decision algorithm will simply answer YES if we remove the monomial, which is fine because we are just looking for given solution. If we want to find all the solutions we could run the algorithm again after removing the last monomial. 
+  
 \subsection*{c)}
-Prove that the running time of the algorithm is bounded from above by a polynomial.Any polynomial is sufficient; you need not look for a polynomial of minimal degree. Recall that a call to $A_{d}$ counts one step.
-\newline \newline
+Prove that the running time of the algorithm is bounded from above by a polynomial. Any polynomial is sufficient; you need not look for a polynomial of minimal degree. Recall that a call to $A_{d}$ counts as one step. \newline
+
+Given $A_{d}$ counts as one step:
+
+The algorithm makes first one call to $A_{d}$ and calls $A_{d}$ one time in each loop n times. There for the running time of the algorithm is $1 + n ( n - 1 ) \rightarrow O(n^2)$. \newline
+
+
 \textbf{Note:} The input of REFUTATION is disjunctive form of monomials over $n$ boolean variables, nothing else. In particular, a legal input cannot specify specific settings of variables.
 
 \end{document}
