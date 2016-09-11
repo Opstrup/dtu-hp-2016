@@ -1,0 +1,11 @@
+**/*.log
+**/*.synctex.gz
+**/*.tex.bak
+
+*.aux
+*.out
+*.log
+*.toc
+*.synctex.gz
+*.DS_Store
+*.tex.bak
