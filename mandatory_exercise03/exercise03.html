@@ -1,0 +1,407 @@
+
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head id="Head1"><title>
+	Technical University of Denmark - login 
+</title><meta name="viewport" content="width=device-width" /><link rel="STYLESHEET" type="text/css" href="/DTU/Static/global.css" title="TOCStyle" />
+    <script type="text/javascript" language="JavaScript">
+        function explainwin(aurl) {
+            wind = window.open(aurl, 'EditWin', 'resizable=1,width=500px,height=400px,scrollbars=1');
+            wind.focus();
+        }
+        function checkScreen() {
+            if (window.screen.width < 799) {
+                document.getElementById("toplogo2").style.height = 30;
+                document.getElementById("outerTable").style.width = 200;
+            }
+        }
+    </script>
+</head>
+<body onload="checkScreen()" style="text-align: center">
+    <form method="post" action="./login?service=https%3a%2f%2fwww.campusnet.dtu.dk%2fcnnet%2ffilesharing%2fSADownload.aspx%3fFileId%3d4279137%26FolderId%3d1014015%26ElementId%3d522017" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="lt" id="lt" value="LT-45236EF2-A324-4B3C-898A-1D86D1E92826" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/wEPDwUJNzA3ODExMjkxZBgBBR5fX0NvbnRyb2xzUmVxdWlyZVBvc3RCYWNrS2V5X18WAQU7Y3RsMDAkQ29udGVudFBsYWNlSG9sZGVyMSRDaGVja0JveF9XYXJuV2hlblJldXNlQ3JlZGVudGlhbHOh24PYY6Qkpy91HnZpapojf9u9tyQOBptWE/kf+JND7A==" />
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="214383D1" />
+	<input type="hidden" name="__EVENTVALIDATION" id="__EVENTVALIDATION" value="/wEdAAQ9r3Gq01A2A7bjGGKAp0QCt7SEjeR9viBz5gWSL630+Pm7vKH/C2CNwKYYdgA/eKbl3F+GWCkj3zBTMdrwPMkI70FUktgYrOAoaXUUuJvHJw2RqpW0z8N8ZrX88AD9bWA=" />
+</div>
+    <div style="text-align: center">
+        <br />
+        <br />
+        <table id="outerTable" style="width: 500px" border="0" align="center" bgcolor="#FFFFFF"
+            cellspacing="0" cellpadding="0">
+            <tr>
+                <td bgcolor="#990000" colspan="2" height="1" style="border: 1px solid #FFFFFF">
+                    <img id="toplogo2" src="/DTU/Static/dtu_logo.gif" align="right" alt="" />
+                </td>
+            </tr>
+            <tr>
+                <td align="center" style="height: 141px; padding: 15px 15px 0px 15px">
+                    
+
+    <script language="JavaScript" type="text/javascript">
+        var timer = null;
+        var adLoginUrl, digsigLoginUrl;
+        var autoLoginTimeout = 2000; // miliseconds    
+
+        function $(id) {
+            return document.getElementById(id);
+        }
+
+        function menu(name) {
+            var index = name == "dtu" ? 0 : name == "ad" ? 1 : name == "takenOut" ? 2 : 0;
+
+
+            for (var i = 0; i < 2; i++) {
+                var td = $("td" + i);
+                var content = $("logincontent" + i);
+
+                if (index == i) {
+                    try { td.style.borderLeft = "solid 1px #ffffff"; } catch (ex) { } // IE mobile doesn't support borderLeft
+                    td.style.backgroundColor = "#ffffff";
+                    content.style.display = "inline";
+                }
+                else {
+                    try { td.style.borderLeft = "solid 1px #cccccc"; } catch (ex) { } // IE mobile doesn't support borderLeft
+                    td.style.backgroundColor = "#f0f0f0";
+                    content.style.display = "none";
+                }
+            }
+
+            setCookie("logintype", name, 365);
+            setCookie("autologin", "0", 365);
+            cancelTimer();
+        }
+
+        function startup() {
+            var loginmethod = getCookie("logintype");
+
+            if (loginmethod == null || loginmethod == "") {
+                loginmethod = "dtu";
+            }
+
+            var elem = $("ContentPlaceHolder1_OCESlogin");
+            digsigLoginUrl = elem.href.replace("/dtu/dtu/", "/dtu/").replace("&lt=", "& lt="); // HACK by MAT "&lt" bliver til "<=" i url
+            elem.href = "javascript:doDigSigLogin()";
+
+            var elem = $("ContentPlaceHolder1_ADlogin");
+            adLoginUrl = elem.href.replace("/dtu/dtu/", "/dtu/"); // HACK by MAT
+            elem.href = "javascript:doADLogin()";
+
+            // rækkefølgen er vigtig her, da menu() overskriver autologin cookie og stopper timeren.
+            var autoLogin = getCookie("autologin");
+            menu(loginmethod);
+            if (autoLogin == "1") {
+
+                if (loginmethod == "dig") {
+                    $("CancelAutoLoginDigSigLink").style.display = "inline";
+                    timer = setTimeout("doDigSigLogin()", autoLoginTimeout);
+                }
+                else if (loginmethod == "ad") {
+                    $("CancelAutoLoginADLink").style.display = "inline";
+                    timer = setTimeout("doADLogin()", autoLoginTimeout);
+                }
+            }
+
+            if (loginmethod == "dtu") {
+                var usernameField = document.getElementById("ContentPlaceHolder1_Textbox_Username");
+                var passwordField = document.getElementById("ContentPlaceHolder1_TextBox_Password");
+                if (usernameField.value.length > 0) {
+                    passwordField.focus();
+                }
+                else {
+                    usernameField.focus();
+                }
+            }
+
+        }
+
+        function onKeyPress(e) {
+            var keycode;
+            if (window.event) keycode = window.event.keyCode;
+            else return true;
+
+            if (keycode == 13) {
+                document.forms["form1"].submit();
+                return false;
+            }
+            else {
+                return true;
+            }
+        }
+
+        function setCookie(c_name, value, expiredays) {
+            var exdate = new Date();
+            exdate.setDate(exdate.getDate() + expiredays);
+            document.cookie = c_name + "=" + escape(value) + ((expiredays == null) ? "" : "; expires=" + exdate.toGMTString()) + "; path=/";
+        }
+
+        function getCookie(c_name) {
+            if (document.cookie.length > 0) {
+                c_start = document.cookie.indexOf(c_name + "=");
+                if (c_start != -1) {
+                    c_start = c_start + c_name.length + 1;
+                    c_end = document.cookie.indexOf(";", c_start);
+                    if (c_end == -1) c_end = document.cookie.length;
+                    return unescape(document.cookie.substring(c_start, c_end));
+                }
+            }
+            return "";
+        }
+
+        function doADLogin() {
+            cancelTimer();
+            setCookie("autologin", "1", 365);
+            window.location = adLoginUrl;
+        }
+
+        function cancelTimer() {
+            $("CancelAutoLoginDigSigLink").style.display = "none";
+            $("CancelAutoLoginADLink").style.display = "none";
+
+            if (timer != null) {
+                clearTimeout(timer);
+            }
+        }
+    
+    </script>
+
+    <div>
+        <table cellpadding="6" width="100%">
+            <tr>
+                <td rowspan="4" style="border-bottom: solid 1px #cccccc; border-left: solid 1px #cccccc;
+                    border-top: solid 1px #cccccc">
+                    <table>
+                        <tr>
+                            <td align="center">
+                                <table id="innertable" border="0" cellpadding="0" cellspacing="0" width="250">
+                                    <tbody>
+                                        <tr>
+                                            <td id="cas_headline" align="left" colspan="2">
+                                                <span id="ContentPlaceHolder1_Label_TargetService" style="font-weight:bold;">Login to CampusNet</span>
+                                                <br />
+                                                <br />
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2">
+                                                
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td colspan="2" style="height: 150px;">
+                                                <div id="logincontent0" style="display: none;">
+                                                    <table cellpadding="0" cellspacing="0" >
+                                                        <tr onkeypress="return onKeyPress(event)">
+                                                            <td class="infotitle" nowrap="nowrap" width="90">
+                                                                <span id="ContentPlaceHolder1_Label_Username">DTU login:</span>
+                                                            </td>
+                                                            <td>
+                                                                <input name="ctl00$ContentPlaceHolder1$Textbox_Username" type="text" value="s160148" id="ContentPlaceHolder1_Textbox_Username" class="textfield" style="width:160px;" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr onkeypress="return onKeyPress(event)">
+                                                            <td class="infotitle" nowrap="nowrap">
+                                                                <span id="ContentPlaceHolder1_Label_Password">Password:</span>
+                                                            </td>
+                                                            <td>
+                                                                <input name="ctl00$ContentPlaceHolder1$TextBox_Password" type="password" id="ContentPlaceHolder1_TextBox_Password" class="textfield" style="width:160px;" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>
+                                                                &#160;
+                                                            </td>
+                                                            <td>
+                                                                <input id="Button_Login" type="image" src="/DTU/Static/login_knap.gif" name="imagesubmit1"
+                                                                    tabindex="3" align="middle" />
+                                                            </td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td align="right">
+                                                            </td>
+                                                            <td>
+                                                                <table>
+                                                                    <tbody>
+                                                                        <tr>
+                                                                            <td>
+                                                                                <input id="ContentPlaceHolder1_CheckBox_WarnWhenReuseCredentials" type="checkbox" name="ctl00$ContentPlaceHolder1$CheckBox_WarnWhenReuseCredentials" />
+                                                                            </td>
+                                                                            <td>
+                                                                                <span id="ContentPlaceHolder1_Label_WarnWhenReuseCredentials">Warn me when reusing credentials</span>
+                                                                            </td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                                <br />
+                                                                <br />
+                                                                <br />
+                                                            </td>
+                                                        </tr>
+                                                    </table>
+                                                </div>
+                                                <div id="logincontent10" style="display: none; padding-bottom: 100px">
+                                                    <br />
+                                                    <br />
+                                                    <center>
+                                                        <a id="ContentPlaceHolder1_OCESlogin" href="OCESauthentication.aspx?service=https%3a%2f%2fwww.campusnet.dtu.dk%2fcnnet%2ffilesharing%2fSADownload.aspx%3fFileId%3d4279137%26FolderId%3d1014015%26ElementId%3d522017&amp;lt=LT-45236EF2-A324-4B3C-898A-1D86D1E92826" style="font-size:Larger;"><span id="ContentPlaceHolder1_Label_LoginLinkDigSig">Login</span></a>
+                                                        <br />
+                                                        <br />
+                                                        <a href="javascript:cancelTimer()" id="CancelAutoLoginDigSigLink" style="display: none">
+                                                            <span id="ContentPlaceHolder1_Label_CancelAutoLoginDigSig">Cancel automatic login</span></a>
+                                                    </center>
+                                                    <!-- HACK: pga en bug i Opera 9.50, skal de næste linjer være der, 
+                                                         da controls fra de skjulte divs ellers bliver vist. MAT -->
+                                                    <br />
+                                                    &#160;
+                                                </div>
+                                                <div id="logincontent1" style="display: none; padding-bottom: 100px">
+                                                    <br />
+                                                    <br />
+                                                    <center>
+                                                        <a id="ContentPlaceHolder1_ADlogin" href="ADlogin.aspx?service=https%3a%2f%2fwww.campusnet.dtu.dk%2fcnnet%2ffilesharing%2fSADownload.aspx%3fFileId%3d4279137%26FolderId%3d1014015%26ElementId%3d522017" style="font-size:Larger;"><span id="ContentPlaceHolder1_Label_LoginLinkAD">Login</span></a>
+                                                        <br />
+                                                        <br />
+                                                        <a href="javascript:cancelTimer()" id="CancelAutoLoginADLink" style="display: none">
+                                                            <span id="ContentPlaceHolder1_Label_CancelAutoLoginAD">Cancel automatic login</span></a>
+                                                    </center>
+                                                    <!-- HACK: pga en bug i Opera 9.50, skal de næste linjer være der, 
+                                                         da controls fra de skjulte divs ellers bliver vist. MAT -->
+                                                    <br />
+                                                    &#160;
+                                                </div>
+                                                <div id="logincontent3" style="display: none; padding-bottom: 100px">
+                                                    <center>
+                                                        <table align="left">
+                                                            <tr align="left">
+                                                                <td>
+                                                                    The "Login automatically (AD)" service is temporarily out of order.
+                                                                </td>
+                                                            </tr>
+                                                            <tr align="left">
+                                                                <td>
+                                                                    The service is exspected to be back medio/ultimo May 2009.
+                                                                </td>
+                                                            </tr>
+                                                        </table>
+                                                    </center>
+                                                    <!-- HACK: pga en bug i Opera 9.50, skal de næste linjer være der, 
+                                                         da controls fra de skjulte divs ellers bliver vist. MAT -->
+                                                    <br />
+                                                    &#160;
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td id="td0" style="background-color: #ffffff; border-left: 1px solid #ffffff; border-bottom: solid 1px #cccccc;
+                    border-right: solid 1px #cccccc; border-top: solid 1px #cccccc;">
+                    <a href="javascript:menu('dtu')">
+                        <span id="ContentPlaceHolder1_Label_LoginWithDTUCredentials">Login with DTU credentials</span></a>
+                </td>
+            </tr>
+            <tr>
+                <td id="td2" style="background-color: #f0f0f0; border-left: 1px solid #cccccc; border-bottom: solid 1px #cccccc;
+                    border-right: solid 1px #cccccc; border-top: solid 1px #cccccc;">
+                    <a id="ContentPlaceHolder1_NemIDLoginUrl" href="https://nemid.dtu.dk/Login2.aspx?r=1&amp;serviceCaller=https%3a%2f%2fauth.dtu.dk%2fDTU%2fNemID.aspx%3fservice%3dhttps%253a%252f%252fwww.campusnet.dtu.dk%252fcnnet%252ffilesharing%252fSADownload.aspx%253fFileId%253d4279137%2526FolderId%253d1014015%2526ElementId%253d522017">Login with NemID</a>
+                </td>
+            </tr>
+            <tr>
+                <td id="td1" style="background-color: #f0f0f0; border-left: 1px solid #cccccc; border-bottom: solid 1px #cccccc;
+                    border-right: solid 1px #cccccc; border-top: solid 1px #cccccc;">
+                    <a href="javascript:menu('ad')">
+                        <span id="ContentPlaceHolder1_Label_ADLogin">Login automatically (AD)</span></a>
+                </td>
+            </tr>
+            <tr>
+                <td style="border-left: solid 1px #cccccc; border-bottom: solid 1px #ffffff; height: 100px">  
+                </td>
+            </tr>
+        </table>
+    </div>
+
+                </td>
+            </tr>
+            <tr>
+                <td align="left" colspan="2">
+                    
+    <div style="margin: 0px 15px 0px 15px; padding-bottom: 15px">
+        
+    </div>
+    <center>
+        <table width="94%" border="0">
+            <tbody>
+                <tr>
+                    <td>
+                        
+                            <a title="Help using DTU authentication" href="#" onclick="explainwin('/DTU/Static/about_cas.html')">
+                                
+                                &gt;
+                                <span id="ContentPlaceHolder2_Label_HelpForCAS">Help for DTU authentication</span></a>
+                            <br />
+                            <br />
+                    </td>
+                    <td>
+                        <a id="ContentPlaceHolder2_Link_Label_ChangeLanguage" href="?menulanguage=da-DK&amp;service=https%3a%2f%2fwww.campusnet.dtu.dk%2fcnnet%2ffilesharing%2fSADownload.aspx%3fFileId%3d4279137%26FolderId%3d1014015%26ElementId%3d522017">På Dansk</a>
+                        <br />
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </center>
+    <table border="0" width="100%">
+        <tr>
+            <td style="border-bottom: 8px solid #E5E5E5">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="3" style="padding-left: 27px; padding-top: 16px; padding-bottom: 13px;
+                border: 1px solid #ffffff; background-color: #990000">
+                
+                <a href="#" onclick="explainwin('/DTU/Static/glemtpw.html')">
+                    <img alt="" src="/DTU/Static/banner_glemtpassword_da.gif" /></a>
+                
+            </td>
+        </tr>
+    </table>
+    <script language="JavaScript" type="text/javascript">
+        startup();
+    </script>
+
+                </td>
+            </tr>
+        </table>
+    </div>
+    
+
+<script type="text/javascript">
+//<![CDATA[
+
+            var usernameField = document.getElementById('ContentPlaceHolder1_Textbox_Username');
+            var passwordField = document.getElementById('ContentPlaceHolder1_TextBox_Password');
+
+            try
+            {
+                if (usernameField != null && passwordField != null)
+                {
+                    if (usernameField.value.length > 0)
+                        passwordField.focus();
+                    else
+                        usernameField.focus();
+                }
+            }
+            catch (err) { }
+            //]]>
+</script>
+</form>
+</body>
+</html>
