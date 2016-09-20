@@ -23,10 +23,17 @@ True answer for X is YES then $P_{R}$[A(X, R) = YES] $>=$ 1/10
 True answer for X is NO then  $P_{R}$[A(X, R) = NO] $>=$ 1
 
 \subsection*{a)}
-Prove that $RP_{1/10} = RP$ and $RP\subset BPP$
+Prove that $RP_{1/10} = RP$ and $RP\subseteq BPP$
 
 $RP_{1/10} = RP$
 
-$RP\subset BPP$
+$RP\subseteq BPP$ \newline
+
+If the definition of class $A$ is a restriction of the definition of class $B$ then we have $A \subset B$. \newline
+
+RP-algorithms (Monte Carlo-algorithms) have one-sided error. Which means they have a pretty good change of getting the correct result, namely at least 50\%. 
+Taken that in consideration we can there by conclude that when running the $RP_{1/10}$ 5 times we will get a success rate of 50\%, there by showing that $RP_{1/10} = RP$. \newline
+
+The BPP algorithm's probability of answering correct should be strictly greater than 1/2. The success rate is determined by the constant $\epsilon$. To proof that $RP\subseteq BPP$ we can boot the success probability of the RP-algorithm to at least $1/2 + \epsilon$ to show that $RP\subseteq BPP$.
 
 \end{document}
