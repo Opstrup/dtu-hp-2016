@@ -1,0 +1,54 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{amsmath, amsfonts}
+\usepackage[utf8]{inputenc}
+
+\begin{document}
+\begin{center}
+{{\Large \sc Computationally Hard Problems}}
+\end{center}
+\rule{\textwidth}{1pt}
+\begin{description}
+\item[Student name and id:] Anders H. Opstrup (s160148)
+\item[Collaborator name(s) and id(s):]
+\item[Hand-in for week:] 4
+\end{description}
+\rule{\textwidth}{1pt}
+
+\section*{Exercise 1}
+\textbf{Problem:} [MINIMUMTESTSET] \newline
+\textbf{Input:} You want to test an electronic circuit. The circuit can have n different errors, $e_{1} ..., e_{n}$. You can perform m different tests $T{_1}..., T{_m}$. Every test can detect some, but not necessarily all, errors. \newline
+\textbf{Output for the optimizing version:} A minimum set of tests that can detect all possible errors.
+
+\subsection*{a)}
+Formulate the above problem in an appropriate way as a decision problem. In particular, one should be able to use a polynomial-time algorithm for this decision problem as a black box to solve the optimization problem as stated above in polynomial time. You need not prove that your decision problem has this property if you feel that the teachers can easily see this. \newline
+
+Given a decision algorithm $A_{d}$ for detecting min. set of tests. $A_{d}$ has three inputs, $R$ which consists of random test sequences. $N$ which is the given errors in the circuit and $k$ which is the desired min. set of test cases. There by we have  $A_{d}(N, k, R)$.
+
+\subsection*{b)}
+Show that this decision problem is in NP. You need not show that the problem is NP-complete. \newline
+
+To show that $A_{d}$ is in NP, we follow the steps from the lecture.
+
+\subsubsection*{1}
+$R$ is random test sequences represented by bits. $R = \{ sq_{1} ..., sq_{n} \}$. The size of each sequence is bounded my our $k$ value. Thereby $|sq_{n}| = k$. This assures that each random generated test sequence we try are valid. \newline
+
+$A_{d}$ verifies each guess by comparing the size of each sequence with the $k$ value. $|sq_{n}| = k$. $A_{d}$ checks if $k$ is positive integer. 
+
+\subsubsection*{2}
+$A_{d}(N, k, R*)$ = YES
+If a valid random test sequence can cover all the given errors the $A_{d}$ will return YES.
+
+$A_{d}(N, k, R)$ = NO
+If a test sequence is not valid $A_{d}$ will immediately return NO else $A_{d}$ will exhaust $R$ and if no solution is found $A_{d}$ will return NO.  
+
+\subsubsection*{3}
+\begin{enumerate}
+	\item There are $n$ test sequences
+	\item each test sequence is checked for at least $k$ bits in $R$. Time $O(n)$
+	\item each test sequence is tried out and the answer is returned. Time $O(n)$
+\end{enumerate}
+
+Total running time $O(n)$.
+
+\end{document}

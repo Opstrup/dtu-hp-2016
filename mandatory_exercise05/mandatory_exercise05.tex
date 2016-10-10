@@ -1,0 +1,55 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{amsmath, amsfonts}
+\usepackage[utf8]{inputenc}
+
+\begin{document}
+\begin{center}
+{{\Large \sc Computationally Hard Problems}}
+\end{center}
+\rule{\textwidth}{1pt}
+\begin{description}
+\item[Student name and id:] Anders H. Opstrup (s160148)
+\item[Hand-in for week:] 5
+\end{description}
+\rule{\textwidth}{1pt}
+
+\section*{Exercise 1}
+\textbf{Problem:} [SAT-TWO-THIRDS] \newline
+\textbf{Input:} A set of clauses $C = \{c_{1}, ... ,c_{k}\}$ over $n$ boolean variables $x_{1}, ... ,x_{n}$. \newline
+\textbf{Output:} YES if there is a truth assignment to the variables such that at least (2/3)$k$ many clauses are satisfied. NO otherwise. \newline \newline
+Show that this problem is $NP$-complete. You may use any problem stated as $NP-$ complete in the lecture notes for this course. You may also assume that SAT-TWO-THIRDS is in $NP$.
+
+\subsection*{a)}
+We  use the 3-SAT problem to prove that SAT-TWO-THIRDS is $NP$-complete. We thereby reduce 3-SAT to SAT-TWO-THIRDS.
+
+\subsection*{b)}
+
+\subsubsection*{b.1)}
+By putting each variable in an clause with two helper variables which always is true, we can control the outcome of the algorithm by a third helper variable by $\land$ it on a clause. \newline \newline
+$(< 3)$-clauses
+By always $\land$ the $\neg y_{3}$ to 2/3 of the clauses we will satisfy the SAT-TWO-THIRD problem.
+\begin{enumerate}
+\item $c'_{j},1 = z_{1} \vee y_{1} \vee y_{2} $
+\item $c'_{j},2 = y_{1} \vee z_{1} \vee y_{2} $
+\item $c'_{j},3 = y_{1} \vee y_{2} \vee z_{1} \land \neg y_{3} $
+\end{enumerate}
+
+$(> 3)$-clauses
+By always $\land$ the $\neg y_{3}$ to 2/3 of the clauses we will satisfy the SAT-TWO-THIRD problem.
+\begin{enumerate}
+\item $c'_{j},1 = z_{1} \vee y_{1} \vee y_{2} $
+\item $c'_{j},2 = z_{2} \vee y_{1} \vee y_{2} $
+\item $c'_{j},3 = z_{3} \vee y_{1} \vee y_{2} $
+\item $c'_{j},4 = z_{4} \vee y_{1} \vee y_{2} $
+\item $c'_{j},5 = z_{5} \vee y_{1} \vee y_{2} \land \neg y_{3} $
+\item $c'_{j},6 = z_{6} \vee y_{1} \vee y_{2} \land \neg y_{3} $
+\end{enumerate}
+
+\subsubsection*{b.2)}
+\textbf{NA}
+
+\subsubsection*{b.3)}
+\textbf{NA}
+
+\end{document}
