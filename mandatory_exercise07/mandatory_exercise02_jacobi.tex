@@ -1,0 +1,43 @@
+\documentclass[11pt]{article}
+\usepackage{fullpage}
+\usepackage{amsmath, amsfonts}
+\usepackage[utf8]{inputenc}
+
+\begin{document}
+\begin{center}
+{{\Large \sc Computationally Hard Problems}}
+\end{center}
+\rule{\textwidth}{1pt}
+\begin{description}
+\item[Student name and id:] Anders H. Opstrup (s160148)
+\item[Collaborator name(s) and id(s):]
+\item[Hand-in for week:] 7
+\end{description}
+\rule{\textwidth}{1pt}
+
+
+\section*{Exercise 1}
+
+Show the computation of $[\frac{1543}{799}]$ using the rules shown in the lecture notes. You may use that gcd(1543, 799) = 1.
+
+\begin{enumerate}
+	\item $[\frac{1543}{799}]$ = $[\frac{744}{799}]$				by I-2
+	\item = $[\frac{2}{799}]$ , $[\frac{372}{799}]$ 					by I-1
+	\item = $[\frac{2}{799}]$ , $[\frac{186}{799}]$ 					by I-1
+	\item = $(+1) [\frac{186}{799}]$ 											by I-5 ($799 \equiv 7 mod 8$)
+	\item = $(+1) [\frac{55}{799}]$												by I-2
+	\item = $(+1)(-1) [\frac{799}{55}]$											by I-3
+	\item = $[\frac{29}{55}]$															by I-2
+	\item = $(-1) [\frac{55}{29}]$													by I-3
+	\item = $(-1) [\frac{26}{29}]$													by I-2
+	\item = $(-1)[\frac{2}{29}]$, $[\frac{13}{29}]$						by I-1
+	\item = $(-1)(-1)[\frac{29}{13}]$												by I-3
+	\item = $(-1)(-1)[\frac{3}{13}]$												by I-2
+	\item = $(-1)(-1)(-1)[\frac{13}{3}]$											by I-3
+	\item = $(-1)(-1)(-1)[\frac{1}{3}]$											by I-2
+	\item = $(-1)^{2}(-1)(+1)$
+	\item = $(-1)^{2}$
+	\item = $1$
+\end{enumerate}
+
+\end{document}
