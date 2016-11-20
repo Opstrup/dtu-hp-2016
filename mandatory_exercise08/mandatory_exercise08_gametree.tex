@@ -11,33 +11,23 @@
 \begin{description}
 \item[Student name and id:] Anders H. Opstrup (s160148)
 \item[Collaborator name(s) and id(s):]
-\item[Hand-in for week:] 7
+\item[Hand-in for week:] 8
 \end{description}
 \rule{\textwidth}{1pt}
 
 
 \section*{Exercise 1}
 
-Show the computation of $[\frac{1543}{799}]$ using the rules shown in the lecture notes. You may use that gcd(1543, 799) = 1.
-
-\begin{enumerate}
-	\item $[\frac{1543}{799}]$ = $[\frac{744}{799}]$				by I-2
-	\item = $[\frac{2}{799}]$ , $[\frac{372}{799}]$ 					by I-1
-	\item = $[\frac{2}{799}]$ , $[\frac{186}{799}]$ 					by I-1
-	\item = $(+1) [\frac{186}{799}]$ 											by I-5 ($799 \equiv 7 mod 8$)
-	\item = $(+1) [\frac{55}{799}]$												by I-2
-	\item = $(+1)(-1) [\frac{799}{55}]$											by I-3
-	\item = $[\frac{29}{55}]$															by I-2
-	\item = $(-1) [\frac{55}{29}]$													by I-3
-	\item = $(-1) [\frac{26}{29}]$													by I-2
-	\item = $(-1)[\frac{2}{29}]$, $[\frac{13}{29}]$						by I-1
-	\item = $(-1)(-1)[\frac{29}{13}]$												by I-3
-	\item = $(-1)(-1)[\frac{3}{13}]$												by I-2
-	\item = $(-1)(-1)(-1)[\frac{13}{3}]$											by I-3
-	\item = $(-1)(-1)(-1)[\frac{1}{3}]$											by I-2
-	\item = $(-1)^{2}(-1)(+1)$
-	\item = $(-1)^{2}$
-	\item = $1$
-\end{enumerate}
+Consider the scenario underlying the problem GameTreeEvaluation from the lecture, but assume that the tree is a complete quaternary one with 2k levels instead of a binary. Propose a modification of Algorithm 5.30 (randomized evaluation) for this type of game trees. Bound the expected number of leaves evaluated by the algorithm by some value that is lower than the total number of leaves. \newline \newline
+\textbf{Modified randomized evaluation.} \newline \newline
+$u \leftarrow root$ \newline
+$result \leftarrow evaluate(v)$ \newline \newline
+\textbf{proc} $evaluate(v)$ \newline
+\textbf{if} \textit{v is a leaf} \textbf{then} \newline
+\textbf{return}$(l(v))$ \newline
+\textbf{else} \newline
+\textit{let} $w_{1}, w_{2}, w_{3}$ \textit{and} $w_{4}$ \textit{be the children of v} \newline
+\textit{pick one child with probability 1/4 at random; call this a, b, c and d} \newline
+\textit{t} $\leftarrow evaluate(a)$ \newline
 
 \end{document}
