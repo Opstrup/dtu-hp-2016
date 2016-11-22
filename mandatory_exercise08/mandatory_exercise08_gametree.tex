@@ -1,4 +1,5 @@
 \documentclass[11pt]{article}
+\newcommand\tab[1][0.5cm]{\hspace*{#1}}
 \usepackage{fullpage}
 \usepackage{amsmath, amsfonts}
 \usepackage[utf8]{inputenc}
@@ -19,15 +20,101 @@
 \section*{Exercise 1}
 
 Consider the scenario underlying the problem GameTreeEvaluation from the lecture, but assume that the tree is a complete quaternary one with 2k levels instead of a binary. Propose a modification of Algorithm 5.30 (randomized evaluation) for this type of game trees. Bound the expected number of leaves evaluated by the algorithm by some value that is lower than the total number of leaves. \newline \newline
-\textbf{Modified randomized evaluation.} \newline \newline
+\textbf{Modified randomized evaluation:} \newline \newline
 $u \leftarrow root$ \newline
 $result \leftarrow evaluate(v)$ \newline \newline
 \textbf{proc} $evaluate(v)$ \newline
 \textbf{if} \textit{v is a leaf} \textbf{then} \newline
-\textbf{return}$(l(v))$ \newline
+\tab \textbf{return}$(l(v))$ \newline
 \textbf{else} \newline
-\textit{let} $w_{1}, w_{2}, w_{3}$ \textit{and} $w_{4}$ \textit{be the children of v} \newline
-\textit{pick one child with probability 1/4 at random; call this a, b, c and d} \newline
-\textit{t} $\leftarrow evaluate(a)$ \newline
+\tab \textit{let} $w_{1}, w_{2}, w_{3}$ \textit{and} $w_{4}$ \textit{be the children of v} \newline
+\tab \textit{pick one child with probability 1/4 at random; call this a and the rest b, c, d} \newline
+\tab \textit{t} $\leftarrow evaluate(a)$ \newline
+\tab \textbf{if} ($v$ is max-node) $\land$ ($t$ == 1) \textbf{then} \newline
+\tab \tab \textbf{return}(0) \newline
+\tab \textbf{else if} ($v$ is min-node) $\land$ ($t$ == 0) \textbf{then} \newline
+\tab \tab \textbf{return}(\textit{evaluate(b)}) \newline
+\tab \textbf{end if} \newline
+\textbf{end if} \newline
+\textbf{end proc} \newline
+
+\newpage
+\subsection*{Analysis of the algorithm}
+
+\begin{enumerate}
+	\item Consider a tree $T$ of depth $2k + 1$ and a min-root.
+	\item Let $M(T)$ be the expected number of leaves that the modified algorithm looks at when evaluating $T$.
+	\item Let $M_{max}(k) = max{M(T) | T has depth 2k}$.
+\end{enumerate}
+
+\subsubsection*{case 1:}
+
+\tab v = min-node \newline
+\tab All children have label 0. \newline
+\tab A child is picked random with probability of $1/4$. \newline
+\tab No other child needs to be evaluated, because we already have found a winning move. \newline
+\tab $M(T) = 1/4M(T_{1})+1/4M(T_{2})+1/4M(T_{3})+1/4M(T_{4}) \leq 1/4M_{max}(k)+1/4M_{max}(k)+1/4M_{max}(k)+1/4M_{max}(k)=M_{max}(k)$
+
+\subsubsection*{case 2:}
+
+\tab v = min-node \newline
+\tab All children have label 1. \newline
+\tab A child is picked random with probability of $1/4$. \newline
+\tab No matter which child the algorithm picks, the other children needs to be evaluated as well. \newline
+\tab $M(T) = M(T_{1})+M(T_{2})+M(T_{3})+M(T_{4}) \leq 4 M_{max}(k)$
+
+\subsubsection*{case 3:}
+
+\tab v = min-node \newline
+\tab All children has mixed labels 0 and 1. \newline
+\tab A child is picked random with probability of $1/4$. \newline
+\tab If the algorithm picks a child with label 0, it does not need to evaluate the other children \newline
+\tab If the algorithm picks a child with label 1, it needs to evaluate at least one other child \newline
+\tab $M(T) = 1/4M(T_{1})+1/4(M(T_{2})+M(T_{1})) + 1/4(M(T_{3})+M(T_{2})+M(T_{1})) + 1/4(M(T_{4})+M(T_{3})+M(T_{2})+M(T_{1})) \leq 2.5 M_{max}(k)$ \newline
+
+\textbf{Facts for min-nodes}
+\begin{enumerate}
+	\item If the label of $v$ is 0, then the time is at most $2.5 M_{max}(k)$.
+	\item If the label of $v$ is 1, then the time is at most $4 M_{max}(k)$.
+\end{enumerate}
+These facts applies for the max-nodes as well just with the obvious changes.
+
+\subsubsection*{Induction}
+
+\tab Consider max-node $v$ which is the root of a tree of depth $2k+2$ \newline
+\tab Here we have three cases as well \newline
+
+\subsubsection*{case 1:}
+
+\tab v = max-node \newline
+\tab All children have label 0. \newline
+\tab A child is picked random with probability of $1/4$. \newline
+\tab No other child needs to be evaluated, because we already have found a winning move. \newline
+\tab No matter which child the algorithm picks, the other children needs to be evaluated as well. \newline
+\tab $M(T) \leq 2.5 M_{max}(k) + 2.5 M_{max}(k) + 2.5 M_{max}(k) + 2.5 M_{max}(k) = 10M_{max}(k)$
+
+\subsubsection*{case 2:}
+
+\tab v = max-node \newline
+\tab All children has mixed labels 0 and 1. \newline
+\tab A child is picked random with probability of $1/4$. \newline
+\tab If the algorithm picks a child with label 1, it does not need to evaluate the other children \newline
+\tab If the algorithm picks a child with label 0, it needs to evaluate at least one other child \newline
+\tab $M(T) \leq 1/4(4M_{max}(k)+(4+2.5)M_{max}(k)) +1/4(4M_{max}(k)+(4+4+2.5)M_{max}(k))+ 1/4(4M_{max}(k)+(4+4+4+2.5)M_{max}(k)) < 32$ $2/4$
+
+\subsubsection*{case 3:}
+
+\tab v = max-node \newline
+\tab All children have label 1. \newline
+\tab A child is picked random with probability of $1/4$. \newline
+\tab No other child needs to be evaluated, because we already have found a winning move. \newline
+\tab $M(T) \leq 4M_{max} < 10M_{max}(k)$
+
+\subsubsection*{Proof}
+For proof we assume \newline
+
+\tab \tab $M_{max}(k) \leq 3^{k}$ \newline
+
+$M_{max}(k+1) \leq 10M_{max}(k) \leq 10 * 3^{k} = 30^{k+1}$.
 
 \end{document}
